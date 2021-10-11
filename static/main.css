@@ -1,0 +1,56 @@
+h2{
+    border-style: dashed;
+    padding: 5px;
+}
+
+.center{
+    width : max-content;
+    margin:  0 auto;
+}
+
+.scoreboard{
+    background-color:burlywood;
+    height: 65vh;
+    padding: 10px;
+    margin: 5px;
+    overflow-y: scroll;
+}
+
+.plateau{
+    position:relative;  
+    background-color: green;
+    height: 65vh;
+    padding: 10px;
+    margin: 5px;
+}
+
+
+.btn{
+    margin-top: 20px;
+    padding: 5px;
+    border: none;
+    border-radius: 2px;
+    background-color: cornflowerblue;
+    color: white;
+}
+
+.btn:hover{
+    cursor:pointer;
+}
+
+.de{
+    margin: 20px
+}
+
+
+.en_bas{
+    font-weight: bold;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.spacer{
+    height: 20px;
+    background: transparent;
+}

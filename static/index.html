@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>1500m</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css"
+        integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+    <link href="./main.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <div class="center">
+        <h2>1500m</h2>
+    </div>
+    <div class="center">
+        <button class="btn" id="reinit">Reinitialiser la partie</button>
+    </div>
+    <div class="pure-g">
+        <div class="pure-u-2-5">
+            <div class="scoreboard">
+                <h3>Score Board</h3>
+                <div id="scoreboard"></div>
+            </div>
+        </div>
+        <div class="pure-u-3-5">
+            <div class="plateau">
+                <div class="pure-g">
+                    <div class="pure-u-1-4">
+                        <div class="de" id="un"></div>
+                    </div>
+                    <div class="pure-u-1-4">
+                        <div class="de" id="deux"></div>
+                    </div>
+                    <div class="pure-u-1-4">
+                        <div class="de" id="trois"></div>
+                    </div>
+                    <div class="pure-u-1-4">
+                        <div class="de" id="quatre"></div>
+                    </div>
+                </div>
+                <div class="pure-g">
+                    <div class="pure-u-1-4">
+                        <div class="de" id="cinq"></div>
+                    </div>
+                    <div class="pure-u-1-4">
+                        <div class="de" id="six"></div>
+                    </div>
+                    <div class="pure-u-1-4">
+                        <div class="de" id="sept"></div>
+                    </div>
+                    <div class="pure-u-1-4">
+                        <div class="de" id="huit"></div>
+                    </div>
+                </div>
+                <div class="center">
+                    <div class="de" id="new"></div>
+                </div>
+                <div class="en_bas">
+                    <div class="pure-g">
+                        <div class="pure-u-6-24"> Coups complémentaires :</div>
+                        <div class="pure-u-10-24" id="coup_comp"></div>
+                    </div>
+                    <div class="pure-g">
+                        <div class="pure-u-6-24"> Score :</div>
+                        <div class="pure-u-10-24" id="score"></div>
+                    </div>
+                    <div class="spacer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="boutons pure-g">
+        <div class="pure-u-1-2">
+            <div class="center">
+                <button class="btn center" id="garder_de">
+                    Garder le dé
+                </button>
+            </div>
+        </div>
+        <div class="pure-u-1-2">
+            <div class="center">
+                <button class="btn" id="relancer">
+                    Relancer
+                </button>
+            </div>
+        </div>
+    </div>
+    <!--<script src="./jeu.js"></script>-->
+    <script src="./requetes.js"></script>
+
+</body>
+
+</html>
