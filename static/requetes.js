@@ -10,50 +10,56 @@ function getCookie(name){
     return undefined
 }
 document.getElementById("garder_de").addEventListener("click", (event) => {
-    console.log("on garde le dé")
-    data = {
-        'id_joueur': getCookie("id_joueur"),
-        'de': parseInt(document.getElementById("new").textContent),
+    if (getCookie("id_joueur") != undefined){
+        console.log("on garde le dé")
+        data = {
+            'id_joueur': getCookie("id_joueur"),
+            'de': parseInt(document.getElementById("new").textContent),
+        }
+        fetch('/api/new_de/', {
+                        'method': 'POST',
+                        'headers': {
+                            'Content-Type': 'application/json'
+                        },
+                        'body': JSON.stringify(data)
+                    })
+        
+        event.preventDefault()
+        location.reload()
     }
-    fetch('/api/new_de/', {
-                    'method': 'POST',
-                    'headers': {
-                        'Content-Type': 'application/json'
-                    },
-                    'body': JSON.stringify(data)
-                })
-    
-    event.preventDefault()
-    location.reload()
 })
 
 document.getElementById("reinit").addEventListener("click", (event) => {
-    console.log("on reinitialise le joueur")
-    fetch('/delcookie?id_joueur=' + getCookie("id_joueur"))
-    event.preventDefault()
-    location.reload()
+    if (getCookie("id_joueur") != undefined){
+        console.log("on reinitialise le joueur")
+        fetch('/delcookie?id_joueur=' + getCookie("id_joueur"))
+        event.preventDefault()
+        location.reload()
+    }
 })
 
 
 document.getElementById("relancer").addEventListener("click", (event) => {
-    console.log("on relance")
-    data = {
-        'id_joueur': getCookie("id_joueur"),
+    if (getCookie("id_joueur") != undefined){
+        console.log("on relance")
+        data = {
+            'id_joueur': getCookie("id_joueur"),
+        }
+        fetch('/api/relance', {
+                        'method': 'POST',
+                        'headers': {
+                            'Content-Type': 'application/json'
+                        },
+                        'body': JSON.stringify(data)
+                    })
+        event.preventDefault()
+        location.reload()
     }
-    fetch('/api/relance', {
-                    'method': 'POST',
-                    'headers': {
-                        'Content-Type': 'application/json'
-                    },
-                    'body': JSON.stringify(data)
-                })
-    event.preventDefault()
-    location.reload()
 })
 
-function load_page(){
+function load_joueur(id){
     data = {
-        'id_joueur': getCookie("id_joueur"),
+        'id_joueur': id,
     }
     // on fetch les infos du joueur actuel
     fetch('/api/affichage', {
@@ -84,6 +90,11 @@ function load_page(){
             .then(resultat => document.getElementById("scoreboard").textContent += resultat["somme"])
         }*/
     })
+
+    
+}
+
+function load_score(){
     // on fetch le tableau des scores
     fetch("/api/scores", {
         'method':'POST',
@@ -92,16 +103,28 @@ function load_page(){
         },
     }).then((joueur) => joueur.json())
     .then((joueur) =>{
-        var indice = 0
         for (var i=0; i< joueur.length; i++){
             if (joueur[i].score != null){
-                indice += 1
-                document.getElementById("scoreboard").innerHTML += "<p>" + "Joueur " + (indice) + " : " + joueur[i].score + "</p>"
+                document.getElementById("scoreboard").innerHTML += "<p>" + "Joueur " + (i+1) + " : " + joueur[i].score + "</p>"
             }
         }
     })
 }
 
+load_score();
 
-
-load_page();
+// on load la partie uniquement si on a un id de joueur
+if (getCookie("id_joueur") == undefined){
+    console.log("on créer un nouveau joueur")
+    fetch("/api/cookie",{
+        'method':'POST',
+        'headers': {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then((joueur) => joueur.json())
+    .then((joueur) =>load_joueur(joueur.id_joueur))
+}
+else{
+    load_joueur(getCookie("id_joueur"));
+}

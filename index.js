@@ -26,35 +26,21 @@ app.use(function (req, res, next) {
     next(); // sans cette ligne on ne pourra pas poursuivre.
 })
 
-app.use((req, res, next)=> { // il charge ça aussi pour les fichiers css et js mdr d'où les 3 entrées ok j'ai trouvé une solution dégueulasse dans l'affichage
-    if(! req.cookies["id_joueur"]){
-        db.models.Joueur.create({
-            coup_comp: 5,
-            new_de : jeu.lance_de(),
-            list_de: [], // on met un array parceque le sette need un array
-        }).then((joueur) => {
-            res.cookie('id_joueur', joueur.id)
-            next();
-            //res.redirect("/cookie?id_joueur=" + joueur.id)
-        }).catch((err) => {
-            console.log(err)
-        })
-    }
-    else{
-        next();
-    }
-})
+
 
 app.use((req, res, next)=> {
     if(req.cookies["id_joueur"]){
         db.models.Joueur.findByPk(req.cookies["id_joueur"])
         .then((joueur)=>{
-            if (joueur.list_de.length == 8){
-                joueur.score = jeu.somme(joueur.list_de)
-                joueur.save()
+            if (joueur != null){
+                if (joueur.list_de.length == 8){
+                    joueur.score = jeu.somme(joueur.list_de)
+                    joueur.save()
+                }
             }
         })
     }
+
     next();
 })
 
@@ -88,15 +74,31 @@ app.get(encodeURI('/choix'), (req, res) => {
 })
 */
 
+app.post("/api/cookie",(req, res, next)=> { // il charge ça aussi pour les fichiers css et js mdr d'où les 3 entrées ok j'ai trouvé une solution dégueulasse dans l'affichage
+    db.models.Joueur.create({
+        coup_comp: 5,
+        new_de : jeu.lance_de(),
+        list_de: [], // on met un array parceque le setter need un array
+    }).then((joueur) => {
+        res.cookie('id_joueur', joueur.id)
+        res.json({"id_joueur":joueur.id})
+    }).catch((err) => {
+        console.log(err)
+    })
+
+})
+
 app.post("/api/affichage", (req, res) => {
     db.models.Joueur.findByPk(req.body.id_joueur)
     .then((joueur) =>{
-        res.json({
-            list_de : joueur.list_de,
-            de : joueur.new_de, 
-            coup_comp: joueur.coup_comp,
-            score: joueur.score
-        })
+        if (joueur != null){
+            res.json({
+                list_de : joueur.list_de,
+                de : joueur.new_de, 
+                coup_comp: joueur.coup_comp,
+                score: joueur.score
+            })
+        }
     })
 })
 
@@ -135,7 +137,7 @@ app.post('/api/relance', (req, res) => {
 
 })
 
-
+/*
 app.post("/api/create/jeu", (req, res) => {
 
     db.models.Jeu.create({
@@ -146,6 +148,7 @@ app.post("/api/create/jeu", (req, res) => {
         console.log(err)
     })
 })
+*/
 
 /*
 app.post("/api/list/",(req,res) => {
@@ -199,7 +202,7 @@ app.post("/api/create/joueur", (req, res) => {
         console.log(err)
     })
 }) */
-
+/*
 app.get("/cookie/", (req, res) => {
     console.log(req.query)
     for (const property in req.query) {
@@ -209,9 +212,8 @@ app.get("/cookie/", (req, res) => {
         res.redirect("/static/index.html")
       }
 })
-
+*/
 app.get("/delcookie/", (req, res) => {
-    console.log(req.query)
     for (const property in req.query) {
         //console.log(`${property}: ${req.query[property]}`);
 
